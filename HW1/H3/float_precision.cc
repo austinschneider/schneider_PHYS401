@@ -22,24 +22,29 @@ T s_down(int power) {
 	return sum;
 }
 
-template <class T>
-void test_precision(std::ostream & out) {
+template <class T, class U>
+void do_diff(T(*f_0)(int), U(*f_1)(int), std::ostream & out) {
 	out << "# power\tdiff" << std::endl;
 	for(int power = 2; power <= 8; ++power) {
-		out << power << "\t" << std::abs(s_up<T>(power) - s_down<T>(power)) << std::endl;
+		out << power << "\t" << std::abs(f_0(power) - f_1(power)) << std::endl;
 	}
+}
+
+template <class T>
+void test_precision(std::ostream & out) {
+	do_diff(s_up<T>, s_down<T>, out);
 }
 
 int main() {
 	std::fstream float_file("./float_precision_data.dat", std::ios_base::out);
+	test_precision<float>(float_file);
+	
 	std::fstream double_file("./double_precision_data.dat", std::ios_base::out);
-	if(float_file)
-		test_precision<float>(float_file);
-	else
-		std::cout << "float file error!" << std::endl;
-		
-	if(double_file)
-		test_precision<double>(double_file);
-	else
-		std::cout << "double file error!" << std::endl;
+	test_precision<double>(double_file);
+	
+	std::fstream sup_err_file("./single_sup_err.dat", std::ios_base::out);
+	do_diff(s_up<float>, s_up<double>, sup_err_file);
+	
+	std::fstream sdown_err_file("./single_sdown_err.dat", std::ios_base::out);
+	do_diff(s_down<float>, s_up<double>, sdown_err_file);
 }
