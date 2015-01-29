@@ -9,12 +9,12 @@ T func_0(int n) {
 
 template <class T> // Taylor series terms for ln(2), alternating series of 1/n
 T func_1(int n) {
-	return ((T) std::pow(-1, n + 1)) / ((T) n);
+	return ((T) std::pow((double)-1, (double) n + 1)) / ((T) n);
 }
 
 template <class T> // Sum series from n=1 to n=10^power
 T s_up(int power, T(*func)(int) = func_0) {
-	int max = std::pow(10, power);
+	int max = std::pow((double)10, (double)power);
 	T sum = 0;
 	for(int n = 1; n <= max; ++n) {
 		sum += func(n);
@@ -24,7 +24,7 @@ T s_up(int power, T(*func)(int) = func_0) {
 
 template <class T> // Sum series from n=10^power to n=1
 T s_down(int power, T(*func)(int) = func_0) {
-	int max = std::pow(10, power);
+	int max = std::pow((double)10, (double)power);
 	T sum = 0;
 	for(int n = max; n >= 1; --n) {
 		sum += func(n);
