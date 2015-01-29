@@ -22,6 +22,7 @@ int main(int argc, char * argv[]) {
 
 	std::fstream file(file_name.c_str());
 	
+	// Read in numbers from file
 	std::vector<int> sample_data;
 	int sample_member;
 	while(file) {
@@ -33,16 +34,20 @@ int main(int argc, char * argv[]) {
 	}
 
 	int sample_size = sample_data.size();
-	int sub_sample_size = sample_size / 10;
+	int sub_sample_size = sample_size;
 	int sub_sample[sub_sample_size];
 
 	int n_sub_samples = 1000;
 	int medians[n_sub_samples];
 
+	// Iterate over sub samples
 	for(int i=0; i<n_sub_samples; ++i) {
+		// Re sample data
 		for(int j=0; j<sub_sample_size; ++j) {
 			sub_sample[j] = sample_data[rand() % sample_size];
 		}
+
+		// Find median
 		std::sort(sub_sample, sub_sample + sub_sample_size);
 		double median;
 		if(sub_sample_size % 2 == 1)
@@ -52,11 +57,13 @@ int main(int argc, char * argv[]) {
 		medians[i] = median;
 	}
 	
+	// Find mean of medians
 	double median_mean = 0;
 	for(int i=0; i<n_sub_samples; ++i) {
 		median_mean += medians[i];
 	}
 	
+	// Find standard deviation of medians
 	median_mean /= n_sub_samples;
 	double median_stdev = 0;
 	for(int i=0; i<n_sub_samples; ++i) {

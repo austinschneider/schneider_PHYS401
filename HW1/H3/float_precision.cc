@@ -1,3 +1,7 @@
+// Float precision:
+// Tests floating point number precision
+// Author: Austin Schneider
+
 #include <cmath>
 #include <fstream>
 #include <iostream>

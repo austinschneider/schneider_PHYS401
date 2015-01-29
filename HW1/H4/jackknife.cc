@@ -1,5 +1,5 @@
-// Bootstrap:
-// Computes a re-sampled mean using the bootstrap method
+// Jackknife:
+// Computes a re-sampled mean using the jackknife method
 // Author: Austin Schneider
 
 #include <vector>
@@ -10,7 +10,7 @@
 #include <algorithm>
 #include <math.h>
 
-template<class T>
+template<class T> // Calculate the mean of an array
 double mean_(T * array, int size) {
 	double total = 0;
 	for(int i=0; i<size; ++i) {
@@ -20,7 +20,7 @@ double mean_(T * array, int size) {
 	return total;
 }
 
-template<class T>
+template<class T> // Calculate the mean of a vector
 double mean_(std::vector<T, std::allocator<T> > vec) {
 	double total = 0;
 	for(int i=0; i<vec.size(); ++i) {
@@ -30,7 +30,7 @@ double mean_(std::vector<T, std::allocator<T> > vec) {
 	return total;
 }
 
-template <class T>
+template <class T> // Calculate the standart deviation of an array
 double std_dev_(T * array, int size) {
 	double mean = mean_(array, size);
 	double total = 0;
@@ -43,7 +43,7 @@ double std_dev_(T * array, int size) {
 	return sqrt(total);
 }
 
-template <class T>
+template <class T> // Read a list from a file and store in a vector
 std::vector<T> * read_file(std::istream & is) {
 	std::vector<T> * sample_data = new std::vector<T>;
 	T sample_member;
@@ -67,8 +67,10 @@ int main(int argc, char * argv[]) {
 		std::cin >> file_name;
 	}
 
+	// Open the file
 	std::fstream file(file_name.c_str());
 
+	// Read in the numbers
 	std::vector<double> * sample_data_p = read_file<double>(file);
 	std::vector<double> & sample_data = *sample_data_p;
 
@@ -76,10 +78,12 @@ int main(int argc, char * argv[]) {
 	double total = 0;
 	double * means = new double[sample_size];
 
+	// Calculate sum of all numbers
 	for(long int i=0; i<sample_size; ++i) {
 		total += (double) sample_data[i];
 	}
 
+	// Calculate individual means
 	for(long int i=0; i<sample_size; ++i) {
 		means[i] = (total - sample_data[i]) / (sample_size - 1);
 	}
