@@ -6,7 +6,7 @@
 #include <fstream>
 
 const int EULER_LIMIT = 100000;
-const double EULER_TIMESTEP = 0.1;
+const double EULER_TIMESTEP = 0.01;
 
 template <class T>
 struct Point {
@@ -35,14 +35,14 @@ Point<T> earth_gravity(Point<T> r, Point<T> v) {
 }
 
 template <class T>
-void euler_simulate(Point<T> r_0, Point<T> v_0, Point<T>(*force)(Point<T>, Point<T>), bool(*terminate)(Point<T>, Point<T>), T step_size) {
+void euler_simulate(Point<T> r_0, Point<T> v_0, Point<T>(*force)(Point<T>, Point<T>), bool(*terminate)(Point<T>, Point<T>), T step_size, std::ostream & os) {
 	Point<T> r = r_0;
 	Point<T> v = v_0;
 	Point<T> f;
-	//os << "# x\ty" << std::endl;
+	os << "# x\ty" << std::endl;
 	for(int count=0; count<EULER_LIMIT; ++count) {
 		f = force(r, v);
-		//os << r.x << " " << r.y << std::endl;
+		os << r.x << " " << r.y << std::endl;
 		if(terminate(r, v)) {
 			std::cout << "After " << count << " steps of " << EULER_TIMESTEP << ":" << std::endl;
 			std::cout << "Position: " << r << std::endl;
@@ -65,19 +65,23 @@ void euler_simulate(Point<T> r_0, Point<T> v_0, Point<T>(*force)(Point<T>, Point
 }
 
 template <class T>
-void ballistic(T x0, T y0, T v0, T angle) {
+void ballistic(T x0, T y0, T v0, T angle, std::ostream & os) {
 	Point<T> r_0, v_0;
 	r_0.x = x0;
 	r_0.y = y0;
 	v_0.x = v0 * std::cos(M_PI * (angle / 180.0));
 	v_0.y = v0 * std::sin(M_PI * (angle / 180.0));
 
-	euler_simulate(r_0, v_0, earth_gravity, below_y, EULER_TIMESTEP);
+	euler_simulate(r_0, v_0, earth_gravity, below_y, EULER_TIMESTEP, os);
 }
 
 int main() {
 
-	ballistic<double>(0, 1, 1, 45);
+	std::fstream traj_a45("./traj_x0_y1_v1_a45.dat", std::ios_base::out);
+	ballistic<double>(0, 1, 1, 45, traj_a45);
+
+	std::fstream traj_a0("./traj_x0_y1_v1_a0.dat", std::ios_base::out);
+	ballistic<double>(0, 1, 1, 0, traj_a0);
 
 	return 0;
 }
