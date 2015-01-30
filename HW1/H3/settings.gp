@@ -29,8 +29,8 @@ unset key
 set grid back lc rgb "#000000"	# set visual grid on plot
 
 # set axes labels
-#set xlabel '$10^k$'		         	# set label x axis
-#set ylabel 'Error' 				# set label y axis
+set xlabel 'sample size ($10^k$)'		         	# set label x axis
+set ylabel 'Error' 				# set label y axis
 
 # styles for symbol plotting
 set style line  1 lt 1 lw 1 pt  7 ps 1.8 lc rgb "#FF0000"
