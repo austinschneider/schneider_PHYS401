@@ -7,14 +7,14 @@ SETTINGS = settings.gp
 TEX	= gnuplot
 
 # make eps
-paper: *.gp
+paper:
 
 	echo "\documentclass{article}" 		>  $(TEX).tex
 	echo "\usepackage{graphics}"		>> $(TEX).tex
 	echo "\usepackage{nopageno}" 		>> $(TEX).tex
 	echo "\usepackage[usenames]{color}" 	>> $(TEX).tex
 	echo "\uegin{document}" 		>> $(TEX).tex
-	echo "\begin{center}" 			>> $(TEX).tex
+	echo "\uegin{center}" 			>> $(TEX).tex
 	echo "\input{./plot.tex}" 		>> $(TEX).tex
 	echo "\end{center}" 			>> $(TEX).tex
 	echo "\end{document}" 			>> $(TEX).tex
@@ -25,9 +25,9 @@ paper: *.gp
 	dvips	$(TEX).dvi -o $(TEX).ps
 	ps2pdf14  $(TEX).ps
 	mv      $(TEX).pdf $(NAME).pdf
-	rm	*.eps
+	rm *.eps
 	rm *.tex
-	rm $(TEX).*
+	rm $(TEX).* 
 
 # clean up!
 clean:
