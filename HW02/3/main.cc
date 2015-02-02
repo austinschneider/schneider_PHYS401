@@ -5,8 +5,8 @@
 #include <iostream>
 #include <iomanip>
 
-const int BISECT_LIMIT = 10000;
-const int NEWTON_LIMIT = BISECT_LIMIT;
+const int SECANT_LIMIT = 10000;
+const int NEWTON_LIMIT = SECANT_LIMIT;
 
 template <class T> // Function that has root sqrt(2): f(x)=x^2-2
 T func_0(T x) {
@@ -30,14 +30,35 @@ T newton(T(*func)(T), T(*deriv)(T), T x, T epsilon) {
 		}
 		x -= f_x/deriv(x);
 	}
+}
 
+template <class T>
+T secant(T(*func)(T), T x0, T x1, T epsilon) {
+	T f_x0 = func(x0);
+	T f_x1 = func(x1);
+	T x2;
+	for(int count=0; count<SECANT_LIMIT; ++count) {
+		x2 = (x0*f_x1 - x1*f_x0) / (f_x1 - f_x0);
+
+		x0 = x1;
+		x1 = x2;
+		f_x0 = f_x1;
+		f_x1 = func(x2);
+
+		if(std::abs(f_x1) < epsilon) {
+			std::cout << "Took " << count + 1 << " steps with epsilon = " << epsilon << std::endl;
+			return x1;
+		}
+	}
 }
 
 int main() {
 	long double epsilon = 1e-15;
 
 	std::cout << "Newton's method:" << std::endl;
-
 	std::cout << "sqrt(2) = " << std::setprecision(16) << newton<long double>(func_0<long double>, deriv_0<long double>, 1.0, epsilon) << std::endl;
+
+	std::cout << "Secant method:" << std::endl;
+	std::cout << "sqrt(2) = " << std::setprecision(16) << secant<long double>(func_0<long double>, 1.0, 1.1, epsilon) << std::endl;
 
 }
