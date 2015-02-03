@@ -7,6 +7,7 @@
 
 const int SECANT_LIMIT = 10000;
 const int NEWTON_LIMIT = SECANT_LIMIT;
+const int FIXED_POINT_LIMIT = SECANT_LIMIT;
 
 template <class T> // Function that has root sqrt(2): f(x)=x^2-2
 T func_0(T x) {
@@ -16,6 +17,16 @@ T func_0(T x) {
 template <class T> // Derivative of func_0
 T deriv_0(T x) {
 	return 2.0*x;
+}
+
+template <class T> // Fixed point root approximation
+T root_iteration(T a, T x) {
+    return ((T) 0.5) * (a / x + x);
+}
+
+template <class T> // Sqrt(2) fixed point approximation
+T root2_iteration(T x) {
+    return root_iteration((T) 2.0, x);
 }
 
 template <class T>
@@ -52,6 +63,20 @@ T secant(T(*func)(T), T x0, T x1, T epsilon) {
 	}
 }
 
+template <class T>
+T fixed_point_iteration(T(*func)(T), T x, T epsilon) {
+    T prev;
+
+    for(int count=0; count<FIXED_POINT_LIMIT; ++count) {
+        prev = x;
+        x = func(x);
+        if(std::abs(prev - x) < epsilon) {
+            std::cout << "Took " << count << " steps with epsilon = " << epsilon << std::endl;
+            return x;
+        }
+    }
+}
+
 int main() {
 	long double epsilon = 1e-15;
 
@@ -60,5 +85,8 @@ int main() {
 
 	std::cout << "Secant method:" << std::endl;
 	std::cout << "sqrt(2) = " << std::setprecision(16) << secant<long double>(func_0<long double>, 1.0, 1.1, epsilon) << std::endl;
+
+    std::cout << "Fixed point method:" << std::endl;
+    std::cout << "sqrt(2) = " << std::setprecision(16) << fixed_point_iteration<long double>(root2_iteration<long double>, 1.0, epsilon) << std::endl;
 
 }
