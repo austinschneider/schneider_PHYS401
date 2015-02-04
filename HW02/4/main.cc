@@ -31,6 +31,15 @@ struct State {
 };
 
 template <class T, int d>
+T energy(State<T, d> state, T(*potential)(State<T, d>)) {
+	T e = potential(state);
+	for(int i=0; i<d; ++i) {
+		e += std::pow(state.v[i], (T) 2.0) / ((T) 2.0);
+	}
+	return e;
+}
+
+template <class T, int d>
 std::ostream& operator<<(std::ostream& os, const State<T, d>& s) {
 	os << s.t << " ";
 	
@@ -140,6 +149,11 @@ Point<T, 1> r4_pot_force(State<T, 1> s) {
 	return f;
 }
 
+template <class T>
+T r4_pot(State<T, 1> s) {
+	return std::pow((T) s.x[0], (T) 4.0) / ((T) 4.0);
+}
+
 int main() {
 	const long double time_step = 1e-5;
 	State<long double, 1> init;
@@ -151,11 +165,11 @@ int main() {
 	
 	std::fstream rk4_file("orbit_rk4.dat", std::ios_base::out);
 	State<long double, 1> s = init;
-	rk4_file << "# RK4: t, x, v" << std::endl;
-	rk4_file << s << std::endl;
+	rk4_file << "# RK4: t, x, v, e" << std::endl;
+	rk4_file << s << " " << energy(s, r4_pot) << std::endl;
 	for(int i=0; i<1e6; ++i) {
 		s = RK4_step<long double, 1>(r4_pot_force, s, time_step);
-		rk4_file << s << std::endl;
+		rk4_file << s << " " << energy(s, r4_pot) << std::endl;
 		if((s.x[0] < 0) ^ is_neg) {
 				is_neg = !is_neg;
 				++swaps;
@@ -168,14 +182,14 @@ int main() {
 	is_neg = false;
 	
 	std::fstream verlet_file("orbit_verlet.dat", std::ios_base::out);
-	verlet_file << "# Verlet: t, x, v" << std::endl;
+	verlet_file << "# Verlet: t, x, v, e" << std::endl;
 	s = init;
-	verlet_file << s << std::endl;
+	verlet_file << s << " " << energy(s, r4_pot) << std::endl;
 	s = verlet_v_step<long double, 1>(r4_pot_force, s, time_step / ((long double) 2.0));
 	for(int i=0; i<1e6; ++i) {
 		s = verlet_full_step<long double, 1>(r4_pot_force, s, time_step);
 		s.t += time_step;
-		verlet_file << s << std::endl;
+		verlet_file << s << " " << energy(s, r4_pot) << std::endl;
 		if((s.x[0] < 0) ^ is_neg) {
 				is_neg = !is_neg;
 				++swaps;
@@ -185,6 +199,6 @@ int main() {
 	}
 	s = verlet_x_step<long double, 1>(r4_pot_force, s, time_step);
 	s = verlet_v_step<long double, 1>(r4_pot_force, s, time_step / ((long double) 2.0));
-	verlet_file << s << std::endl;
+	verlet_file << s << " " << energy(s, r4_pot) << std::endl;
 	
 }
