@@ -1,37 +1,27 @@
-set xlabel 't'                  # set label x axis
-set ylabel 'E'              # set label y axis
+set xlabel 'x'                  # set label x axis
+set ylabel 'v'              # set label y axis
 
 
-set output 'plot_energy.tex'
+set output 'plot_phase.tex'
 set size 1.0, 1.0
-set multiplot layout 1,1
+set multiplot layout 2,1
 #
-set yrange [0:100]    		# set range of y axis
-set xrange [0:2]		# set range of x axis
-set format y "%1.5f"
-set format x "%1.5f"
-set xtics 1     		# set x mayor tics
-set mxtics 10			# set number of x minor tics
-set ytics   			# set y mayor tics
-set mytics 10  			# set number of y minor tics
+set format y "%1.1f"
+set format x "%1.1f"
+set autoscale
 set title "RK4"
 unset key
 plot \
-'orbit_rk4.dat' u 1:4 title "ballistic"
+'orbit_rk4.dat' u 2:3 title "ballistic"
 
 #
-set yrange [0:100]    		# set range of y axis
-set xrange [0:2]		# set range of x axis
-set format y "%1.5f"
-set format x "%1.5f"
-set xtics 1     		# set x mayor tics
-set mxtics 10			# set number of x minor tics
-set ytics   			# set y mayor tics
-set mytics 10  			# set number of y minor tics
+set format y "%1.1f"
+set format x "%1.1f"
+set autoscale
 set title "Velocity Verlet"
 unset key
 plot \
-'orbit_verlet.dat' u 1:4 title "ballistic"
+'orbit_verlet.dat' u 2:3 title "ballistic"
 
 
 #########################################################

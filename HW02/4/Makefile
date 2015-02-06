@@ -31,18 +31,20 @@ paper:
 	echo "\uegin{document}"             >> $(TEX).tex
 	echo "\uegin{center}"               >> $(TEX).tex
 	echo "\input{./plot_energy.tex}"       >> $(TEX).tex
+	echo "\pagebreak"                     >> $(TEX).tex
 	echo "\input{./plot_phase.tex}"       >> $(TEX).tex
 	echo "\end{center}"             >> $(TEX).tex
 	echo "\end{document}"           >> $(TEX).tex
 	perl -pi -e 's/uegin/begin/g' $(TEX).tex
-	gnuplot -e "load 'settings.gp'" plot.gp
+	gnuplot -e "load 'settings.gp'" plot_energy.gp
+	gnuplot -e "load 'settings.gp'" plot_phase.gp
 	latex   $(TEX).tex
 	dvips   $(TEX).dvi -o $(TEX).ps
 	ps2pdf14  $(TEX).ps
 	mv      $(TEX).pdf $(NAME).pdf
 	rm *.eps
-	#rm *.tex
-	#rm $(TEX).*
+	rm *.tex
+	rm $(TEX).*
 
 
 # clean up

@@ -32,7 +32,7 @@ set grid back lc rgb "#000000"	# set visual grid on plot
 #set ylabel 'E' 				# set label y axis
 
 # styles for symbol plotting
-set style line  1 lt 1 lw 1 pt  7 ps 1.8 lc rgb "#FF0000"
+set style line  1 lt 1 lw 1 pt  7 ps 0.5 lc rgb "#FF0000"
 set style line  2 lt 1 lw 1 pt  5 ps 1.8 lc rgb "#2B65EC"
 set style line  3 lt 1 lw 1 pt  9 ps 1.8 lc rgb "#347235"
 set style line  4 lt 1 lw 1 pt 13 ps 1.8 lc rgb "#571B7E"

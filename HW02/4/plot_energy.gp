@@ -3,31 +3,18 @@ set ylabel 'E'              # set label y axis
 
 
 set output 'plot_energy.tex'
-set size 1.0, 1.0
-set multiplot layout 1,1
+set size 2.0, 1.0
+set multiplot layout 2,1
+
 #
-set yrange [0:100]    		# set range of y axis
-set xrange [0:2]		# set range of x axis
-set format y "%1.5f"
-set format x "%1.5f"
-set xtics 1     		# set x mayor tics
-set mxtics 10			# set number of x minor tics
-set ytics   			# set y mayor tics
-set mytics 10  			# set number of y minor tics
+set autoscale
 set title "RK4"
 unset key
 plot \
 'orbit_rk4.dat' u 1:4 title "ballistic"
 
 #
-set yrange [0:100]    		# set range of y axis
-set xrange [0:2]		# set range of x axis
-set format y "%1.5f"
-set format x "%1.5f"
-set xtics 1     		# set x mayor tics
-set mxtics 10			# set number of x minor tics
-set ytics   			# set y mayor tics
-set mytics 10  			# set number of y minor tics
+set autoscale
 set title "Velocity Verlet"
 unset key
 plot \
