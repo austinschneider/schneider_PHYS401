@@ -4,6 +4,7 @@
 #include <cmath>
 #include <iostream>
 #include <fstream>
+#include "kepler_r2_exact.cc"
 
 template <class T, int d>
 struct Point {
@@ -216,5 +217,6 @@ int main() {
 	do_verlet<double, 2>(verlet_file, kepler_r2_force, kepler_r2_pot_energy, init, time_step, n_steps);
 	std::fstream rk4_file("2d_orbit_rk4.dat", std::ios_base::out);
 	do_rk4<double, 2>(rk4_file, kepler_r2_force, kepler_r2_pot_energy, init, time_step, n_steps);
+    do_kepler_r2_exact<double>();
 	
 }
