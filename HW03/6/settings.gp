@@ -40,7 +40,7 @@ set style line  5 lt 1 lw 1 pt 15 ps 1.8 lc rgb "#F88017"
 set style line  6 lt 1 lw 1 pt  7 ps 1.8 lc rgb "#B048B5"
 
 # styles for lines
-set style line 11 lt 1 lw 1 lc rgb "#FF0000"
+set style line 11 lt 1 lw 2 lc rgb "#FF0000"
 set style line 12 lt 1 lw 1 lc rgb "#2B65EC"
 set style line 13 lt 1 lw 1 lc rgb "#347235"
 set style line 14 lt 1 lw 1 lc rgb "#571B7E"

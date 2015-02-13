@@ -6,7 +6,7 @@ SETTINGS = settings.gp
 TEX = gnuplot
 
 # set executable name
-EXECNAME    = 2d_oscillator
+EXECNAME    = relax
 
 # default compiler settings
 CC          =  g++
@@ -30,14 +30,11 @@ paper:
 	echo "\usepackage[usenames]{color}"     >> $(TEX).tex
 	echo "\uegin{document}"             >> $(TEX).tex
 	echo "\uegin{center}"               >> $(TEX).tex
-	echo "\input{./plot_traj.tex}"       >> $(TEX).tex
-	echo "\pagebreak"                  >> $(TEX).tex
-	echo "\input{./plot_ex.tex}"       >> $(TEX).tex
+	echo "\input{./plot.tex}"       >> $(TEX).tex
 	echo "\end{center}"             >> $(TEX).tex
 	echo "\end{document}"           >> $(TEX).tex
 	perl -pi -e 's/uegin/begin/g' $(TEX).tex
-	gnuplot -e "load 'settings.gp'" plot_traj.gp
-	gnuplot -e "load 'settings.gp'" plot_ex.gp
+	gnuplot -e "load 'settings.gp'" plot.gp
 	latex   $(TEX).tex
 	dvips   $(TEX).dvi -o $(TEX).ps
 	ps2pdf14  $(TEX).ps
