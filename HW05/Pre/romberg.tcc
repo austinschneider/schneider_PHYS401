@@ -26,13 +26,13 @@ T romberg(T(*f)(T), T epsilon, T a, T b) {
 	std::vector<T*> table;
 	int n=0;
 	table.push_back(new T[n+1]);
-	table[n][0] = trap(f,std::pow(2,n),a,b);
+	table[n][0] = trap(f,std::pow((double)2,(int)n),a,b);
 	++n;
 	for(int ii=0; ii<ROMBERG_LIMIT; ++ii) {
 		table.push_back(new T[n+1]);
-		table[n][0] = trap(f,std::pow(2,n),a,b);
+		table[n][0] = trap(f,std::pow((double)2,n),a,b);
 		for(int i=1; i<n+1; ++i) {
-			table[n][i] = (((T)std::pow(4.0,i))*table[n][i-1]-table[n-1][i-1])/((T)std::pow(4.0,i)-((T)1));
+			table[n][i] = (((T)std::pow((double)4.0,i))*table[n][i-1]-table[n-1][i-1])/((T)std::pow((double)4.0,i)-((T)1));
 		}
 		if(std::abs(table[n][n]-table[n-1][n-1])<epsilon) {
 			for(int i=0; i<n+1; ++i) {
