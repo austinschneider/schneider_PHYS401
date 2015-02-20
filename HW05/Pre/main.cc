@@ -1,4 +1,4 @@
-#include "romberg.h"
+#include "integrate.h"
 
 // A test function
 template <class T>
