@@ -6,6 +6,7 @@
 #include <cmath>
 #include <vector>
 #include <iostream>
+#include <iomanip>
 
 // Trapezoidal integration estimate
 template <class T>
@@ -49,7 +50,7 @@ T romberg(T(*f)(T), T epsilon, T a, T b) {
 		if(std::abs(table[n][n]-table[n-1][n-1])<epsilon) {
 			for(int i=0; i<n+1; ++i) {
 				for(int j=0; j<=i; ++j) {
-					std::cout << table[i][j] << " ";
+					std::cout << std::setprecision(15) << table[i][j] << " ";
 				}
 				std::cout << std::endl;
 			}
