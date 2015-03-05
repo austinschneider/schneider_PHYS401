@@ -1,9 +1,9 @@
 set autoscale
-set logscale x
+#set logscale x
 set logscale y
-set xlabel 'samples'
-set ylabel 'error'
-set title "HW06-2 $x^3$ Integration"
+set xlabel 'y'
+set ylabel 'average'
+set title "HW06-7"
 plot \
-'output.dat' u 1:2, 1/sqrt(x) with lines
+'output.dat' u 1:2, 'output.dat' u 1:3, x with lines
 
