@@ -4,6 +4,7 @@
 #include <fstream>
 #include <iomanip>
 #include <iostream>
+#include <sstream>
 
 #include <string.h>
 #include <unistd.h>
@@ -94,16 +95,45 @@ double test_temperature(int * spins, int * * lookup_table, double temp, U & func
 	return e_total / ((double)data_steps);
 }
 
+template <class U>
+void test_temperature_range(int * spins, int * * lookup_table, U & functor, int N, int d, int thermal_steps, int data_steps, int trials, double t_min, double t_max, double dt, std::ostream & os) {
+	std::vector<double> avg_energies;
+	std::vector<double> stdev_energies;
+	double energy_trials[trials];
+	double e_total;
+	double mean;
+	double stdev;
+	for(double t = t_min; t<=t_max; t += dt) {
+		e_total = 0;
+		for(int i=0; i<trials; ++i) {
+			energy_trials[i] = test_temperature(spins, lookup_table, t, functor, N, d, thermal_steps, data_steps) / ((double) N);
+			e_total += energy_trials[i];
+		}
+		mean = e_total / trials;
+		stdev = 0;
+		for(int i=0; i<trials; ++i) {
+			stdev += std::pow(std::abs(mean - energy_trials[i]), 2.0);
+		}
+		stdev /= trials;
+		os << t << ", " << mean << ", " << stdev << std::endl;
+	}
+}
+
 int main() {
 	MTRand_closed mtr;
 	mtr.seed(seedgen());
-	std::fstream out("output.dat", std::ios_base::out);
 	
 	int d = 2;
-    int N = 10;
-	int * * nb = generate_1d_lookup_table(10);
-	int spins[N];
-	
-	for(int i=0; i<10; ++i)
-		std::cout << test_temperature(spins, nb, 1000, mtr, N, d, 3000, 3000) << std::endl;
+    int max_pow = 3;
+    for(int k=1; k<=max_pow; ++k) {
+        std::stringstream ss;
+        ss << "output_";
+        int N = std::pow(10.0, (double)k);
+        ss << N << ".dat";
+        std::fstream out(ss.str().c_str(), std::ios_base::out);
+        out << "#temp, E/N mean, E/N stdev" << std::endl;
+	    int * * nb = generate_1d_lookup_table(N);
+	    int spins[N];	
+	    test_temperature_range(spins, nb, mtr, N, d, 3000, 3000, 10, 0.5, 5.0, 0.5, out);
+    }
 }
