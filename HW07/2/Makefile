@@ -11,15 +11,15 @@ EXECNAME    = main
 
 # default compiler settings
 CC          =  g++
-OPT         = -O3 
+OPT         = -O3
 LDFLAGS     = -lm
 
-SRC         = *.cc
+SRC         = *.cc ../../Global/*.cc
 OBJS        = $*(SRC).o
 
 # compilation for runs
 all:
-	$(CC) -g $(OPT) $(SRC) -o $(EXECNAME) $(LDFLAGS) 
+	$(CC) -g $(OPT) $(SRC) -o $(EXECNAME) $(LDFLAGS)
 	/bin/rm -rf *.o
 
 # make pdf
@@ -30,4 +30,3 @@ paper:
 clean:
 	rm -rf $(NAME).pdf
 	rm -rf *.o $(EXECNAME)
-
