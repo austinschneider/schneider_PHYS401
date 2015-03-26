@@ -2,28 +2,19 @@
 #define OBSERVABLES_H
 
 #include <vector>
+#include <string>
 
 #include "lattice.h"
+#include "../../Global/utils.h"
 
 struct Observables;
 
-struct Observable_v {
+struct Observable {
   Observables * obs;
-  inline virtual void calculate(Lattice * lat) {};
-  inline virtual void update(Lattice * lat, double delta_e, int n) {};
-  inline virtual double measure() {};
-  inline virtual double peek() {};
-  inline virtual void average() {};
-  inline virtual double mean() {};
-  inline virtual Observable_v & operator+=(Observable_v & o) {};
-};
-
-template <class T>
-struct Observable: public Observable_v {
-  T quantity;
+  double quantity;
   std::vector<double> measured_quantities;
-  void (*calculate_)(T &, Lattice *);
-  void (*update_)(T &, Lattice *, double, int);
+  void (*calculate_)(double &, Lattice *, Observables *);
+  void (*update_)(double &, Lattice *, Observables *, double, int);
 
   void calculate(Lattice * lat);
   void update(Lattice * lat, double delta_e, int n);
@@ -31,16 +22,18 @@ struct Observable: public Observable_v {
   double peek();
   void average();
   double mean();
-  Observable_v & operator+=(Observable_v & o);
+  Observable & operator+=(Observable & o);
+  Observable & shallow_copy(Observable & o);
 };
 
 struct Observables {
-  std::vector<Observable_v> obs;
+  std::vector<Observable> obs;
+  std::vector<std::string> names;
   Lattice * lat;
   void calculate();
   void update(double delta_e, int n);
   void measure();
-  void add(Observable_v o);
+  void add(std::string n, Observable o);
   void average();
   Observables mean();
 
