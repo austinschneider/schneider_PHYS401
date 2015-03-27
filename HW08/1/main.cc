@@ -38,7 +38,17 @@ int * * generate_1d_lookup_table(int N) {
 }
 
 void map_2d_to_1d(int & x, int x0, int x1, int N0, int N1) {
-    x = x0 + x1*N0;
+    while(x0 < 0)
+        x0 += N0;
+    while(x1 < 0)
+        x1 += N1;
+    while(x0 >= N0)
+        x0 -= N0;
+    while(x1 >= N1)
+        x1 -= N1;
+    x = (x0 % N0) + (x1 % N1)*N0;
+    if(x < 0 | x >= N0*N1)
+        std::cout << "BAD x: " << x << ", " << x0 << ", " << x1 << std::endl;
 }
 
 void map_1d_to_2d(int x, int & x0, int & x1, int N0, int N1) {
@@ -55,10 +65,10 @@ int * * generate_2d_lookup_table(int N0, int N1) {
     for(int i=0; i<N0; ++i) {
         for(int j=0; j<N1; ++j) {
             map_2d_to_1d(t, i, j, N0, N1);
-            map_2d_to_1d(t0, (i+1) % N0, j, N0, N1);
-            map_2d_to_1d(t1, (i-1) % N0, j, N0, N1);
-            map_2d_to_1d(t2, i, (j+1) % N1, N0, N1);
-            map_2d_to_1d(t3, i, (j-1) % N1, N0, N1);
+            map_2d_to_1d(t0, i+1, j, N0, N1);
+            map_2d_to_1d(t1, i-1, j, N0, N1);
+            map_2d_to_1d(t2, i, j+1, N0, N1);
+            map_2d_to_1d(t3, i, j-1, N0, N1);
             nb[0][t] = t0;
             nb[1][t] = t1;
             nb[2][t] = t2;
@@ -72,13 +82,38 @@ template <class U>
 double flip_rand_spin(Lattice * lat, Observables * obs, double temp, U & functor) {
 	int spin = ((double)lat->N)*functor();
 	double delta = 0;
+    //std::cout << lat << ", " << lat->d << std::endl;
+    for(int i=0; i<lat->N; ++i) {
+        if(lat->N != 64)
+            std::cout << "BAD N" << std::endl;
+        if(std::abs(lat->spins[i]) > 1)
+            std::cout << "BAS spins[" << i << "] = " << lat->spins[i] << std::endl;
+    }
 	for(int j=0; j<lat->d; ++j) {
-		delta += 2.0*((double)lat->spins[spin])*((double)lat->spins[lat->lookup_table[j][spin]]);
+
+		double d = 2.0*((double)lat->spins[spin])*((double)lat->spins[lat->lookup_table[j][spin]]);
+        if(std::abs(d) > 2)
+            std::cout << "BAD d: " << d << " from " << spin << ", " << lat->lookup_table[j][spin] << std::endl;
+        delta += d;
+        //std::cout << delta << std::endl;
+        if(std::abs(delta) > 8)
+            std::cout << "OVER: " << lat->spins[spin] << ", " << lat->spins[lat->lookup_table[j][spin]] << std::endl;
 	}
 
 	if(functor() < std::exp(-1.0 * delta / temp)) {
+        //obs->obs[0].calculate(lat);
+        //double e0 = obs->obs[0].peek();
         obs->update(delta, spin);
 		lat->spins[spin] = -lat->spins[spin];
+        //obs->obs[0].calculate(lat);
+        //double e1 = obs->obs[0].peek();
+        //std::cout << delta << ", " << e1-e0 << std::endl;
+        //std::cout << "I: " << -1.0 * lat->spins[spin] << std::endl;
+        //std::cout << "O: ";
+        //for(int i=0; i<lat->d; ++i) {
+        //    std::cout << lat->spins[lat->lookup_table[i][spin]] << ", ";
+        //}
+        //std::cout << std::endl;
         return delta;
 	}
     else {
@@ -200,9 +235,11 @@ double test_temperature(Lattice * lat, Observables * obs, double temp, U & funct
 	double e_total = 0;
     obs->calculate();
 	for(int i=0; i<thermal_steps; ++i) {
+        //std::cout << energy << std::endl;
 		lattice_sweep(lat, obs, temp, functor, energy);
 	}
 	for(int i=0; i<data_steps; ++i) {
+        //std::cout << energy << std::endl;
 		lattice_sweep(lat, obs, temp, functor, energy);
         obs->measure();
 		e_total += energy;
