@@ -47,8 +47,6 @@ void map_2d_to_1d(int & x, int x0, int x1, int N0, int N1) {
     while(x1 >= N1)
         x1 -= N1;
     x = (x0 % N0) + (x1 % N1)*N0;
-    if(x < 0 | x >= N0*N1)
-        std::cout << "BAD x: " << x << ", " << x0 << ", " << x1 << std::endl;
 }
 
 void map_1d_to_2d(int x, int & x0, int & x1, int N0, int N1) {
@@ -75,6 +73,14 @@ int * * generate_2d_lookup_table(int N0, int N1) {
             nb[3][t] = t3;
         }
     }
+    for(int i=0; i<4; ++i) {
+        for(int j=0; j<N0*N1; ++j) {
+            std::cout << nb[i][j] << "\t";
+        }
+        std::cout << std::endl << std::endl;
+    }
+    std::cout << std::endl;
+
     return nb;
 }
 
@@ -82,36 +88,13 @@ template <class U>
 double flip_rand_spin(Lattice * lat, Observables * obs, double temp, U & functor) {
 	int spin = ((double)lat->N)*functor();
 	double delta = 0;
-    //std::cout << lat << ", " << lat->d << std::endl;
-    for(int i=0; i<lat->N; ++i) {
-        if(std::abs(lat->spins[i]) > 1)
-            std::cout << "BAS spins[" << i << "] = " << lat->spins[i] << std::endl;
-    }
 	for(int j=0; j<lat->d; ++j) {
-
-		double d = 2.0*((double)lat->spins[spin])*((double)lat->spins[lat->lookup_table[j][spin]]);
-        if(std::abs(d) > 2)
-            std::cout << "BAD d: " << d << " from " << spin << ", " << lat->lookup_table[j][spin] << std::endl;
-        delta += d;
-        //std::cout << delta << std::endl;
-        if(std::abs(delta) > 8)
-            std::cout << "OVER: " << lat->spins[spin] << ", " << lat->spins[lat->lookup_table[j][spin]] << std::endl;
+		delta += 2.0*((double)lat->spins[spin])*((double)lat->spins[lat->lookup_table[j][spin]]);
 	}
 
 	if(functor() < std::exp(-1.0 * delta / temp)) {
-        //obs->obs[0].calculate(lat);
-        //double e0 = obs->obs[0].peek();
         obs->update(delta, spin);
 		lat->spins[spin] = -lat->spins[spin];
-        //obs->obs[0].calculate(lat);
-        //double e1 = obs->obs[0].peek();
-        //std::cout << delta << ", " << e1-e0 << std::endl;
-        //std::cout << "I: " << -1.0 * lat->spins[spin] << std::endl;
-        //std::cout << "O: ";
-        //for(int i=0; i<lat->d; ++i) {
-        //    std::cout << lat->spins[lat->lookup_table[i][spin]] << ", ";
-        //}
-        //std::cout << std::endl;
         return delta;
 	}
     else {
@@ -193,7 +176,7 @@ void calc_M_(double & q, Lattice * lat, Observables * obs) {
 }
 
 void up_M_(double & q, Lattice * lat, Observables * obs, double delta_e, int n) {
-    q += lat->spins[n]*2.0;
+    q -= lat->spins[n]*2.0;
 }
 
 const int MN_index = 5;
@@ -280,7 +263,7 @@ void test_temperature_range(Lattice * lat, Observables * obs, U & functor, int t
 }
 
 int main() {
-  MTRand_closed mtr;
+  MTRand mtr;
   mtr.seed(utils::seedgen());
   Lattice lat;
   lat.d = 4;
@@ -337,7 +320,7 @@ int main() {
   o_M2N.cpu_save = true;
   obs.add("M2/N", o_M2N);
 
-  for(int k=3; k<=max_pow; ++k) {
+  for(int k=2; k<=max_pow; ++k) {
     std::stringstream ss;
     ss << "output_";
     int L = std::pow(2.0, (double)k);
