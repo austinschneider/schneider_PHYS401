@@ -84,8 +84,6 @@ double flip_rand_spin(Lattice * lat, Observables * obs, double temp, U & functor
 	double delta = 0;
     //std::cout << lat << ", " << lat->d << std::endl;
     for(int i=0; i<lat->N; ++i) {
-        if(lat->N != 64)
-            std::cout << "BAD N" << std::endl;
         if(std::abs(lat->spins[i]) > 1)
             std::cout << "BAS spins[" << i << "] = " << lat->spins[i] << std::endl;
     }
