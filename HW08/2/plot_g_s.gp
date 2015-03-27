@@ -1,7 +1,7 @@
 set autoscale
 #set logscale x
 #set logscale y
-set xlabel 'T'
+set xlabel '$L^{1/v}(T-T_c)$'
 set ylabel '$g$'
 set title "HW08-2"
 
