@@ -107,7 +107,7 @@ double calc_energy(Lattice * lat) {
 		    energy += lat->spins[i]*lat->spins[lat->lookup_table[i][j]];
         }
 	}
-	return -1.0 * energy / lat->d;
+	return -1.0 * energy / 2.0;
 }
 
 const int E_index = 0;
