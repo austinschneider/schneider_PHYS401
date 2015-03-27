@@ -55,10 +55,10 @@ int * * generate_2d_lookup_table(int N0, int N1) {
     for(int i=0; i<N0; ++i) {
         for(int j=0; j<N1; ++j) {
             map_2d_to_1d(t, i, j, N0, N1);
-            map_2d_to_1d(t0, i+1, j, N0, N1);
-            map_2d_to_1d(t1, i-1, j, N0, N1);
-            map_2d_to_1d(t2, i, j+1, N0, N1);
-            map_2d_to_1d(t3, i, j-1, N0, N1);
+            map_2d_to_1d(t0, (i+1) % N0, j, N0, N1);
+            map_2d_to_1d(t1, (i-1) % N0, j, N0, N1);
+            map_2d_to_1d(t2, i, (j+1) % N1, N0, N1);
+            map_2d_to_1d(t3, i, (j-1) % N1, N0, N1);
             nb[0][t] = t0;
             nb[1][t] = t1;
             nb[2][t] = t2;
