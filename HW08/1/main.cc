@@ -292,41 +292,49 @@ int main() {
   Observable o_E;
   o_E.update_ = up_E_;
   o_E.calculate_ = calc_E_;
+  o_E.cpu_save = false;
   obs.add("E", o_E);
   
   Observable o_EN;
   o_EN.update_ = up_EN_;
   o_EN.calculate_ = calc_EN_;
+  o_EN.cpu_save = true;
   obs.add("E/N", o_EN);
 
   Observable o_E2;
   o_E2.update_ = up_E2_;
   o_E2.calculate_ = calc_E2_;
+  o_E2.cpu_save = true;
   obs.add("E2", o_E2);
   
   Observable o_E2N;
   o_E2N.update_ = up_E2N_;
   o_E2N.calculate_ = calc_E2N_;
+  o_E2N.cpu_save = true;
   obs.add("E2/N", o_E2N);
 
   Observable o_M;
   o_M.update_ = up_M_;
   o_M.calculate_ = calc_M_;
+  o_M.cpu_save = false;
   obs.add("M", o_M);
 
   Observable o_MN;
   o_MN.update_ = up_MN_;
   o_MN.calculate_ = calc_MN_;
+  o_MN.cpu_save = true;
   obs.add("M/N", o_MN);
 
   Observable o_M2;
   o_M2.update_ = up_M2_;
   o_M2.calculate_ = calc_M2_;
+  o_M2.cpu_save = true;
   obs.add("M2", o_M2);
 
   Observable o_M2N;
   o_M2N.update_ = up_M2N_;
   o_M2N.calculate_ = calc_M2N_;
+  o_M2N.cpu_save = true;
   obs.add("M2/N", o_M2N);
 
   for(int k=3; k<=max_pow; ++k) {

@@ -12,6 +12,7 @@ struct Observables;
 struct Observable {
   Observables * obs;
   double quantity;
+  bool cpu_save;
   std::vector<double> measured_quantities;
   void (*calculate_)(double &, Lattice *, Observables *);
   void (*update_)(double &, Lattice *, Observables *, double, int);

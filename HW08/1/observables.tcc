@@ -9,12 +9,15 @@ void Observable::calculate(Lattice * lat) {
 }
 
 void Observable::update(Lattice * lat, double delta_e, int n) {
-    update_(quantity, lat, obs, delta_e, n);
+    if(!cpu_save)
+        update_(quantity, lat, obs, delta_e, n);
 }
 
 double Observable::measure() {
-    measured_quantities.push_back((double)quantity);
-    return quantity;
+  if(cpu_save)
+    calculate(obs->lat);
+  measured_quantities.push_back((double)quantity);
+  return quantity;
 }
 
 double Observable::peek() {
@@ -27,6 +30,8 @@ void Observable::average() {
 }
 
 double Observable::mean() {
+  if(cpu_save)
+      calculate(obs->lat);
   return utils::mean(measured_quantities);
 }
 
@@ -38,6 +43,7 @@ Observable & Observable::operator+=(Observable & o) {
 Observable & Observable::shallow_copy(Observable & o) {
   obs = o.obs;
   quantity = o.quantity;
+  cpu_save = o.cpu_save;
   update_ = o.update_;
   calculate_ = o.calculate_;
   return *this;
