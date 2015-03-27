@@ -20,7 +20,7 @@ OBJS        = $*(SRC).o
 # compilation for runs
 all:
 	$(CC) -g $(OPT) $(SRC) -o $(EXECNAME) $(LDFLAGS)
-	/bin/rm -rf *.o
+	#/bin/rm -rf *.o
 
 # make pdf
 paper:
