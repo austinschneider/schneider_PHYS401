@@ -61,8 +61,8 @@ struct Population {
     typename T::Load * load;
     int pop_size;
     double mutation_rate;
-    double min_fitness;
-    T min;
+    double max_fitness;
+    T max;
 
     Population(typename T::Load * l, int size, double m) {
         load = l;
@@ -70,7 +70,7 @@ struct Population {
         pop = &pop0;
         next_pop = &pop1;
         mutation_rate = m;
-        min_fitness = std::numeric_limits<int>::max();
+        max_fitness = 0;
         for(int i=0; i<pop_size; ++i) {
             add(T(load), pop);
         }
@@ -88,7 +88,7 @@ struct Population {
             p0 = i-1;
         else
             p0 = i;
-        roll = (pop->total_fitness - pop->pop.at(p0).calc_fitness() + min_fitness) * drand();
+        roll = (pop->total_fitness - pop->min_fitness*(pop->pop.size() - 1) - pop->pop.at(p0).calc_fitness()) * drand();
         accumulator = 0;
         for(i=0; accumulator <= roll && i<pop->pop.size(); i++)
         {
@@ -96,22 +96,21 @@ struct Population {
                 continue;
             accumulator += pop->pop.at(i).calc_fitness() - pop->min_fitness;
         }
-        p1 = i-1;
+        if(i>0)
+            p1 = i-1;
+        else
+            p1 = i;
     }
 
     void add(T i, Pop_ * p) {
-        /*for(int ii=0; ii<i.load->size; ++ii) {
-            std::cout << i.I[ii] << " ";
-        }
-        std::cout << std::endl;*/
         if(i.calc_fitness() < p->min_fitness) {
             p->min_fitness = i.calc_fitness();
         }
         p->total_fitness += p->min_fitness;
         p->pop.push_back(i);
-        if(i.calc_fitness() < min_fitness) {
-            min_fitness = i.calc_fitness();
-            min = i;
+        if(i.calc_fitness() > max_fitness) {
+            max_fitness = i.calc_fitness();
+            max = i;
         }
     }
 
@@ -247,23 +246,28 @@ int main() {
     drand.seed(utils::seedgen());
     irand.seed(utils::seedgen());
     std::ifstream in("load.txt", std::ios_base::in);
-    PartLoad load(in, 10);
+    std::ofstream fit("fitness.dat", std::ios_base::out);
+    std::ofstream best("best.dat", std::ios_base::out);
+    PartLoad load(in, 3);
     Population<PartIndividual> pop(&load, 10, 0.05);
-    for(int i=0; i<1000; ++i) {
+
+    fit << "# gen max_fitness" << std::endl;
+    for(int i=0; i<10000; ++i) {
         pop.next_gen();
-        std::cout << pop.min_fitness << std::endl;
-        std::vector<double> sets[load.n_partitions];
-        double sums[load.n_partitions]; memset(sums, 0, sizeof(sums));
-        for(int i=0; i<load.size; ++i) {
-            sets[pop.min.I[i]].push_back(load.S[i]);
-            sums[pop.min.I[i]] += load.S[i];
+        fit << i << " " << pop.max_fitness << std::endl;
+    }
+    std::vector<double> sets[load.n_partitions];
+    double sums[load.n_partitions]; memset(sums, 0, sizeof(sums));
+    for(int i=0; i<load.size; ++i) {
+        sets[pop.max.I[i]].push_back(load.S[i]);
+        sums[pop.max.I[i]] += load.S[i];
+    }
+    for(int i=0; i<load.n_partitions; ++i) {
+        best << i << " " << sums[i] << std::endl;
+        std::cout << sums[i] << ":\t ";
+        for(int j=0; j<sets[i].size(); ++j) {
+            std::cout << sets[i][j] << " ";
         }
-        for(int i=0; i<load.n_partitions; ++i) {
-            std::cout << sums[i] << ":\t ";
-            for(int j=0; j<sets[i].size(); ++j) {
-                std::cout << sets[i][j] << " ";
-            }
-            std::cout << std::endl;
-        }
+        std::cout << std::endl;
     }
 }
