@@ -217,7 +217,7 @@ float tsp_temp(int step, TSPNode *) {
 };
 
 int tsp_sweeps(int step) {
-    return 100*(step+1);
+    return 10000*(step+1);
 };
 
 template <class T>
