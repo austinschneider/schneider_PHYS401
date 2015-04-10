@@ -80,8 +80,7 @@ struct Population {
         double roll = (pop->total_fitness - pop->min_fitness*pop->pop.size()) * drand();
         double accumulator = 0;
         int i;
-        for(i=0; accumulator <= roll && i<pop->pop.size(); i++)
-        {
+        for(i=0; accumulator <= roll && i<pop->pop.size(); i++) {
             accumulator += pop->pop.at(i).calc_fitness() - pop->min_fitness;
         }
         if(i>0)
@@ -90,8 +89,7 @@ struct Population {
             p0 = i;
         roll = (pop->total_fitness - pop->min_fitness*(pop->pop.size() - 1) - pop->pop.at(p0).calc_fitness()) * drand();
         accumulator = 0;
-        for(i=0; accumulator <= roll && i<pop->pop.size(); i++)
-        {
+        for(i=0; accumulator <= roll && i<pop->pop.size(); i++) {
             if(i == p0)
                 continue;
             accumulator += pop->pop.at(i).calc_fitness() - pop->min_fitness;
@@ -178,12 +176,12 @@ struct PartIndividual: Individual<PartIndividual, PartLoad> {
 
     };
 
-    init() {
+    void init() {
         is_fit = false;
         is_child = false;
         I = NULL;
     }
-    init(PartLoad * l) {
+    void init(PartLoad * l) {
         is_fit = false;
         is_child = false;
         I = new int[load->size];
