@@ -1,0 +1,9 @@
+Number of cores: 8
+Parallel section will use 6 threads.
+Hello from thread 5
+Hello from thread 3
+Hello from thread 0
+Hello from thread 4
+Hello from thread 2
+Hello from thread 1
+1000000

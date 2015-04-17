@@ -1,10 +1,11 @@
-#PBS -l nodes=1:ppn=1,mem=1gb,walltime=01:00:00
+#PBS -l nodes=1:ppn=8,mem=1gb,walltime=01:00:00
 #PBS -N why_so_many_ponies
 #PBS -m e
 #PBS -q medium
 #PBS -M hogenshpogen@tamu.edu
 #PBS -j oe
 
+export OMP_NUM_THREADS=8
 cd $PBS_O_WORKDIR
 
 ./main
