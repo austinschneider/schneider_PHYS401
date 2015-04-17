@@ -1,1 +1,0 @@
-# The runtime of the jackknife program is O(n) by design and as evidenced by test results.

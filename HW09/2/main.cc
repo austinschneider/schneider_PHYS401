@@ -250,8 +250,15 @@ int main() {
     Population<PartIndividual> pop(&load, 10, 0.05);
 
     fit << "# gen max_fitness" << std::endl;
-    for(int i=0; i<10000; ++i) {
+    for(int i=0; i<500; ++i) {
         pop.next_gen();
+        for(int j=0; j<pop.pop_size; ++j) {
+            for(int k=0; k<load.size; ++k) {
+                std::cout << pop.pop->pop[j].I[k];
+            }
+            std::cout << ": " << pop.pop->pop[j].fitness << std::endl;
+        }
+        std::cout << std::endl;
         fit << i << " " << pop.max_fitness << std::endl;
     }
     std::vector<double> sets[load.n_partitions];
