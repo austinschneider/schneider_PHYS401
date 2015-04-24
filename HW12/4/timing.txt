@@ -1,0 +1,9 @@
+Single thread:
+real3m6.619s
+user3m6.584s
+sys0m0.016s
+
+2 Threads:
+real3m63m6.693s
+user3m63m8.900s
+sys0m00m0.009s
