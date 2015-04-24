@@ -1,0 +1,144 @@
+
+
+*******************************************************************************
+Fri Apr 24 17:46:04 2015
+
+
+FIT:    data read from 'L2B.dat' using 1:2:3 yerr
+        format = x:z:s
+        #datapoints = 30
+function used for fitting: l(x)
+	l(x) = a + b*x
+fitted parameters initialized with current variable values
+
+iter      chisq       delta/lim  lambda   a             b            
+   0 1.4681618674e+04   0.00e+00  2.79e+02    1.000000e+00   1.000000e+00
+   5 5.5425219566e+01  -2.17e-02  2.79e-03    2.579119e+00   9.930758e-01
+
+After 5 iterations the fit converged.
+final sum of squares of residuals : 55.4252
+rel. change during last iteration : -2.16728e-07
+
+degrees of freedom    (FIT_NDF)                        : 28
+rms of residuals      (FIT_STDFIT) = sqrt(WSSR/ndf)    : 1.40694
+variance of residuals (reduced chisquare) = WSSR/ndf   : 1.97947
+p-value of the Chisq distribution (FIT_P)              : 0.00151062
+
+Final set of parameters            Asymptotic Standard Error
+=======================            ==========================
+a               = 2.57912          +/- 0.2338       (9.065%)
+b               = 0.993076         +/- 0.009304     (0.9369%)
+
+correlation matrix of the fit parameters:
+                a      b      
+a               1.000 
+b              -0.998  1.000 
+
+
+*******************************************************************************
+Fri Apr 24 17:46:04 2015
+
+
+FIT:    data read from 'L2B.dat' using 1:2:3 yerr
+        format = x:z:s
+        #datapoints = 30
+function used for fitting: q(x)
+	q(x) = c + d*x + e*(x**2)
+fitted parameters initialized with current variable values
+
+iter      chisq       delta/lim  lambda   c             d             e            
+   0 2.9630620638e+09   0.00e+00  5.76e+03    1.000000e+00   1.000000e+00   1.000000e+00
+   7 2.4634289783e+01  -1.74e-05  5.76e-04    3.961812e+00   7.383488e-01   7.922249e-03
+
+After 7 iterations the fit converged.
+final sum of squares of residuals : 24.6343
+rel. change during last iteration : -1.73784e-10
+
+degrees of freedom    (FIT_NDF)                        : 27
+rms of residuals      (FIT_STDFIT) = sqrt(WSSR/ndf)    : 0.955186
+variance of residuals (reduced chisquare) = WSSR/ndf   : 0.912381
+p-value of the Chisq distribution (FIT_P)              : 0.594949
+
+Final set of parameters            Asymptotic Standard Error
+=======================            ==========================
+c               = 3.96181          +/- 0.2861       (7.221%)
+d               = 0.738349         +/- 0.0443       (6%)
+e               = 0.00792225       +/- 0.001364     (17.21%)
+
+correlation matrix of the fit parameters:
+                c      d      e      
+c               1.000 
+d              -0.902  1.000 
+e               0.832 -0.990  1.000 
+
+
+*******************************************************************************
+Fri Apr 24 17:46:04 2015
+
+
+FIT:    data read from 'L2B.dat' using 1:2:3 yerr
+        format = x:z:s
+        #datapoints = 30
+function used for fitting: l(x)
+	l(x) = y0 + m*x
+fitted parameters initialized with current variable values
+
+iter      chisq       delta/lim  lambda   y0            m            
+   0 1.4681618674e+04   0.00e+00  2.79e+02    1.000000e+00   1.000000e+00
+   5 5.5425219566e+01  -2.17e-02  2.79e-03    2.579119e+00   9.930758e-01
+
+After 5 iterations the fit converged.
+final sum of squares of residuals : 55.4252
+rel. change during last iteration : -2.16728e-07
+
+degrees of freedom    (FIT_NDF)                        : 28
+rms of residuals      (FIT_STDFIT) = sqrt(WSSR/ndf)    : 1.40694
+variance of residuals (reduced chisquare) = WSSR/ndf   : 1.97947
+p-value of the Chisq distribution (FIT_P)              : 0.00151062
+
+Final set of parameters            Asymptotic Standard Error
+=======================            ==========================
+y0              = 2.57912          +/- 0.2338       (9.065%)
+m               = 0.993076         +/- 0.009304     (0.9369%)
+
+correlation matrix of the fit parameters:
+                y0     m      
+y0              1.000 
+m              -0.998  1.000 
+
+
+*******************************************************************************
+Fri Apr 24 17:46:05 2015
+
+
+FIT:    data read from 'L2B.dat' using 1:2:3 yerr
+        format = x:z:s
+        #datapoints = 30
+function used for fitting: q(x)
+	q(x) = y0 + m*x + n*(x**2)
+fitted parameters initialized with current variable values
+
+iter      chisq       delta/lim  lambda   y0            m             n            
+   0 2.9630620638e+09   0.00e+00  5.76e+03    1.000000e+00   1.000000e+00   1.000000e+00
+   7 2.4634289783e+01  -1.74e-05  5.76e-04    3.961812e+00   7.383488e-01   7.922249e-03
+
+After 7 iterations the fit converged.
+final sum of squares of residuals : 24.6343
+rel. change during last iteration : -1.73784e-10
+
+degrees of freedom    (FIT_NDF)                        : 27
+rms of residuals      (FIT_STDFIT) = sqrt(WSSR/ndf)    : 0.955186
+variance of residuals (reduced chisquare) = WSSR/ndf   : 0.912381
+p-value of the Chisq distribution (FIT_P)              : 0.594949
+
+Final set of parameters            Asymptotic Standard Error
+=======================            ==========================
+y0              = 3.96181          +/- 0.2861       (7.221%)
+m               = 0.738349         +/- 0.0443       (6%)
+n               = 0.00792225       +/- 0.001364     (17.21%)
+
+correlation matrix of the fit parameters:
+                y0     m      n      
+y0              1.000 
+m              -0.902  1.000 
+n               0.832 -0.990  1.000 
